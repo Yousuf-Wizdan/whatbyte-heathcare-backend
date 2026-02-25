@@ -61,40 +61,292 @@ python manage.py runserver
 
 ## Testing
 
-All APIs have been manually tested using Postman.
+All APIs have been manually tested using Postman. Follow this comprehensive test guide to verify all functionality.
 
-### Test Flow
+### 🌐 Base URL
+```
+http://127.0.0.1:8000
+```
 
-Follow this sequence:
+---
 
-1. **Register User**  
-   `POST /api/auth/register/`
+## 🔐 AUTHENTICATION APIs
 
-2. **Login**  
-   `POST /api/auth/login/`  
-   Use returned JWT access token.
+### 1. Register User
+**POST** `/api/auth/register/`
 
-3. **Create Patient**  
-   `POST /api/patients/`
+**Body:**
+```json
+{
+  "name": "Ritika Verma",
+  "email": "ritika.verma92@gmail.com",
+  "password": "StrongPass123"
+}
+```
 
-4. **Create Doctor**  
-   `POST /api/doctors/`
+**Expected:** User created successfully
 
-5. **Assign Doctor to Patient**  
-   `POST /api/mappings/`
+---
 
-6. **Retrieve Mappings**  
-   `GET /api/mappings/`
+### 2. Login
+**POST** `/api/auth/login/`
 
-7. **Remove Mapping**  
-   `DELETE /api/mappings/<id>/`
+**Body:**
+```json
+{
+  "email": "ritika.verma92@gmail.com",
+  "password": "StrongPass123"
+}
+```
 
-### Security Tests Verified
+**Response:** Copy the `access` token
 
-- ✅ Unauthorized requests return 401
-- ✅ Users cannot access other users' patients
-- ✅ Duplicate doctor assignments are prevented
-- ✅ Invalid data (e.g., negative age) is rejected
+**Important:** Use this token in all subsequent requests:
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+## 👨‍⚕️ PATIENT MANAGEMENT APIs
+
+### 3. Add Patient
+**POST** `/api/patients/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "name": "Ananya Verma",
+  "age": 28,
+  "gender": "Female"
+}
+```
+
+---
+
+### 4. Get All Patients (User Specific)
+**GET** `/api/patients/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Expected:** Shows only Ananya Verma (your own patients)
+
+---
+
+### 5. Get Specific Patient
+**GET** `/api/patients/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 6. Update Patient
+**PUT** `/api/patients/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "name": "Ananya Verma",
+  "age": 29,
+  "gender": "Female"
+}
+```
+
+---
+
+### 7. Delete Patient
+**DELETE** `/api/patients/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+## 🩺 DOCTOR MANAGEMENT APIs
+
+### 8. Add Doctor
+**POST** `/api/doctors/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "name": "Dr. Vikram Khanna",
+  "specialization": "Dermatology",
+  "experience": 9
+}
+```
+
+---
+
+### 9. Get All Doctors
+**GET** `/api/doctors/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 10. Get Specific Doctor
+**GET** `/api/doctors/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 11. Update Doctor
+**PUT** `/api/doctors/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "name": "Dr. Vikram Khanna",
+  "specialization": "Dermatology",
+  "experience": 10
+}
+```
+
+---
+
+### 12. Delete Doctor
+**DELETE** `/api/doctors/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+## 🔗 PATIENT-DOCTOR MAPPING APIs
+
+**Note:** Recreate patient & doctor first if deleted
+
+### 13. Assign Doctor to Patient
+**POST** `/api/mappings/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "patient": 1,
+  "doctor": 1
+}
+```
+
+---
+
+### 14. Get All Mappings
+**GET** `/api/mappings/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 15. Get Doctors for Specific Patient
+**GET** `/api/mappings/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 16. Remove Doctor from Patient
+**DELETE** `/api/mappings/1/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+---
+
+## 🔐 SECURITY CHECK
+
+### Test Without Token
+**GET** `/api/patients/`
+
+**Headers:** (Don't include Authorization header)
+
+**Expected:** `401 Unauthorized`
+
+---
+
+## 🧪 VALIDATION CHECK
+
+### Test Invalid Data
+**POST** `/api/patients/`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Body:**
+```json
+{
+  "name": "Test",
+  "age": -5,
+  "gender": "Male"
+}
+```
+
+**Expected:** Validation error (age must be positive)
+
+---
+
+## ✅ EXPECTED OUTCOME
+
+- ✔ Register works
+- ✔ Login returns JWT access & refresh tokens
+- ✔ Patients are user-owned (each user sees only their patients)
+- ✔ Doctors are global (shared across all users)
+- ✔ Mapping works with proper validation
+- ✔ Unauthorized requests blocked (401)
+- ✔ Validation works (negative age, invalid data rejected)
+
+**If all pass → Assignment Complete 🎯**
 
 ---
 
