@@ -1,5 +1,5 @@
 # Django Framework
-Django==6.0.2
+Django==5.1.5
 
 # PostgreSQL Database Adapter
 psycopg2-binary==2.9.10
@@ -8,10 +8,13 @@ psycopg2-binary==2.9.10
 python-decouple==3.8
 
 # Database URL Parser
-dj-database-url==2.2.0
+dj-database-url==2.3.0
 
 # Django REST Framework
-djangorestframework==3.14.0
+djangorestframework==3.15.2
 
 # JWT Authentication
-djangorestframework-simplejwt==5.3.1
+djangorestframework-simplejwt==5.4.0
+
+# CORS Headers (recommended for API)
+django-cors-headers==4.6.0
