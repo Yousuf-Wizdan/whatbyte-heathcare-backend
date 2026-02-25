@@ -444,34 +444,5 @@ Users can:
 2. Platform account (Heroku, Render, Railway, etc.)
 3. Production WSGI server (gunicorn, uwsgi, etc.)
 
-### Deployment Steps
-
-1. **Set Environment Variables** (on your hosting platform):
-   ```
-   SECRET_KEY=<generate-new-secret-key>
-   DATABASE_URL=postgresql://user:password@host/database?sslmode=require
-   DEBUG=False
-   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
-   ```
-
-2. **Collect Static Files**:
-   ```bash
-   python manage.py collectstatic --noinput
-   ```
-
-3. **Run Migrations**:
-   ```bash
-   python manage.py migrate
-   ```
-
-### Security Checklist
-- ✅ Set `DEBUG=False` in production
-- ✅ Use a strong, unique `SECRET_KEY`
-- ✅ Configure `ALLOWED_HOSTS` with your domain
-- ✅ Use HTTPS (most platforms provide this automatically)
-- ✅ Keep dependencies updated regularly
-
----
-
 **Developer**: Yousuf Wizdan  
 **Repository**: [github.com/Yousuf-Wizdan/whatbyte-heathcare-backend](https://github.com/Yousuf-Wizdan/whatbyte-heathcare-backend)
