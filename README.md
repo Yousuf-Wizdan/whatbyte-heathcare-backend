@@ -4,6 +4,8 @@ A secure backend system built with Django and Django REST Framework for managing
 
 ## Run Locally
 
+**Requirements**: Python 3.10 or higher (Python 3.11 recommended)
+
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/Yousuf-Wizdan/whatbyte-heathcare-backend.git
@@ -21,13 +23,28 @@ pip install -r requirements.txt
 ```
 
 ### 3. Configure Environment
-Create `.env` file:
+Create `.env` file by copying from the example:
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your actual values:
 ```env
-SECRET_KEY=your_secret_key_here
+# Generate SECRET_KEY using:
+# python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+SECRET_KEY=your_random_secret_key_here
 DATABASE_URL=postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
 DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
 ```
-**Note**: For Neon databases, include `?sslmode=require` in DATABASE_URL
+
+**Environment Variables**:
+- `SECRET_KEY`: Django secret key (required) - Generate using command above
+- `DATABASE_URL`: PostgreSQL connection string (required) - Must include `?sslmode=require` for Neon
+- `DEBUG`: Set to `True` for development, `False` for production
+- `ALLOWED_HOSTS`: Comma-separated hostnames (for production, add your domain)
+
+**Note**: Never commit your `.env` file to version control
 
 ### 4. Run Migrations & Start Server
 ```bash
@@ -93,10 +110,10 @@ This is a **secure backend API** for healthcare management that provides:
 
 ## Tech Stack
 
-- **Django** 6.0.2 & **Django REST Framework** 3.14.0
+- **Django** 5.1.5 & **Django REST Framework** 3.15.2
 - **PostgreSQL** (Neon cloud database)
-- **djangorestframework-simplejwt** 5.3.1 - JWT authentication
-- **Python 3.x**
+- **djangorestframework-simplejwt** 5.4.0 - JWT authentication
+- **Python** 3.10+ (3.11 recommended)
 
 ## Features
 
@@ -165,6 +182,42 @@ Users can:
 - Audit logs for compliance
 - Email notifications
 - Advanced search & filtering
+
+---
+
+## Production Deployment
+
+### Prerequisites
+1. PostgreSQL database (e.g., Neon, AWS RDS, Heroku Postgres)
+2. Platform account (Heroku, Render, Railway, etc.)
+3. Production WSGI server (gunicorn, uwsgi, etc.)
+
+### Deployment Steps
+
+1. **Set Environment Variables** (on your hosting platform):
+   ```
+   SECRET_KEY=<generate-new-secret-key>
+   DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+   DEBUG=False
+   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+   ```
+
+2. **Collect Static Files**:
+   ```bash
+   python manage.py collectstatic --noinput
+   ```
+
+3. **Run Migrations**:
+   ```bash
+   python manage.py migrate
+   ```
+
+### Security Checklist
+- ✅ Set `DEBUG=False` in production
+- ✅ Use a strong, unique `SECRET_KEY`
+- ✅ Configure `ALLOWED_HOSTS` with your domain
+- ✅ Use HTTPS (most platforms provide this automatically)
+- ✅ Keep dependencies updated regularly
 
 ---
 
