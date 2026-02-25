@@ -1,8 +1,8 @@
 # Django Framework
 Django==5.1.5
 
-# PostgreSQL Database Adapter
-psycopg2-binary==2.9.10
+# PostgreSQL Database Adapter (modern version, better compatibility)
+psycopg[binary]==3.2.3
 
 # Environment Variable Management
 python-decouple==3.8
