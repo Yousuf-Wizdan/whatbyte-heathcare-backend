@@ -42,6 +42,45 @@ python manage.py runserver
 
 ---
 
+## Testing
+
+All APIs have been manually tested using Postman.
+
+### Test Flow
+
+Follow this sequence:
+
+1. **Register User**  
+   `POST /api/auth/register/`
+
+2. **Login**  
+   `POST /api/auth/login/`  
+   Use returned JWT access token.
+
+3. **Create Patient**  
+   `POST /api/patients/`
+
+4. **Create Doctor**  
+   `POST /api/doctors/`
+
+5. **Assign Doctor to Patient**  
+   `POST /api/mappings/`
+
+6. **Retrieve Mappings**  
+   `GET /api/mappings/`
+
+7. **Remove Mapping**  
+   `DELETE /api/mappings/<id>/`
+
+### Security Tests Verified
+
+- ✅ Unauthorized requests return 401
+- ✅ Users cannot access other users' patients
+- ✅ Duplicate doctor assignments are prevented
+- ✅ Invalid data (e.g., negative age) is rejected
+
+---
+
 ## Project Overview
 
 This is a **secure backend API** for healthcare management that provides:
